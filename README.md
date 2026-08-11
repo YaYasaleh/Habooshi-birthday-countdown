@@ -1,4 +1,4 @@
-# Heba-birthday-countdown
+#
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
