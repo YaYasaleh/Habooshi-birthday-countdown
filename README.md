@@ -1,438 +1,228 @@
-#
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>آسف</title>
 
-  <title>Happy Birthday هبه ❤️</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
 
-    body {
-      min-height: 100vh;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-
-      background:
-        radial-gradient(circle at 50% 20%, #3b1954 0%, #160b24 45%, #050308 100%);
-    }
-
-    /* النجوم */
-
-    .stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      opacity: .7;
-      animation: twinkle 3s infinite ease-in-out;
-    }
-
-    @keyframes twinkle {
-      0%, 100% {
-        opacity: .2;
-      }
-
-      50% {
-        opacity: 1;
-      }
-    }
-
-    /* القلوب */
-
-    .hearts {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .heart {
-      position: absolute;
-      bottom: -40px;
-      animation: floatHeart linear forwards;
-    }
-
-    @keyframes floatHeart {
-      0% {
-        transform: translateY(0) scale(.7);
-        opacity: 0;
-      }
-
-      15% {
-        opacity: .8;
-      }
-
-      100% {
-        transform: translateY(-110vh) scale(1.2);
-        opacity: 0;
-      }
-    }
-
-    /* المحتوى */
-
-    .container {
-      width: 92%;
-      max-width: 850px;
-      padding: 45px 25px;
-
-      background: rgba(255,255,255,.055);
-      border: 1px solid rgba(220,180,255,.18);
-      border-radius: 35px;
-
-      backdrop-filter: blur(15px);
-
-      box-shadow:
-        0 25px 90px rgba(0,0,0,.45);
-
-      animation: appear 1.2s ease;
-    }
-
-    @keyframes appear {
-      from {
-        opacity: 0;
-        transform: translateY(25px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .small-title {
-      color: #d9a5ff;
-      font-size: 17px;
-      letter-spacing: 5px;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: clamp(45px, 10vw, 85px);
-      margin-bottom: 15px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #ffffff,
-          #e5c4ff,
-          #ffabd9
-        );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .subtitle {
-      font-size: clamp(20px, 4vw, 28px);
-      color: #f4e7fa;
-      margin-bottom: 45px;
-    }
-
-    /* العداد */
-
-    .countdown {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-    }
-
-    .box {
-      padding: 25px 10px;
-
-      background: rgba(255,255,255,.055);
-
-      border: 1px solid rgba(220,180,255,.15);
-
-      border-radius: 22px;
-    }
-
-    .number {
-      display: block;
-
-      font-size: clamp(35px, 7vw, 60px);
-      font-weight: bold;
-
-      color: #e4b7ff;
-    }
-
-    .label {
-      display: block;
-
-      margin-top: 8px;
-
-      color: #bcaec6;
-      font-size: 15px;
-    }
-
-    .bottom {
-      margin-top: 40px;
-
-      color: #c9b4d3;
-      font-size: 17px;
-      line-height: 2;
-    }
-
-    .cake {
-      font-size: 45px;
-      margin-top: 15px;
-    }
-
-    /* الجوال */
-
-    @media (max-width: 600px) {
-
-      body {
-        overflow: auto;
-      }
-
-      .container {
-        padding: 35px 18px;
-      }
-
-      .countdown {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .box {
-        padding: 20px 8px;
-      }
-
-    }
-
-  </style>
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="stars"></div>
+<canvas id="canvas"></canvas>
 
-  <div class="hearts"></div>
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
+let particles = [];
+let width;
+let height;
 
-  <main class="container">
+function resize() {
+  width = canvas.width = window.innerWidth * devicePixelRatio;
+  height = canvas.height = window.innerHeight * devicePixelRatio;
 
-    <div class="small-title">
-      AUGUST 22
-    </div>
+  canvas.style.width = window.innerWidth + "px";
+  canvas.style.height = window.innerHeight + "px";
 
-    <h1>
-      Happy Birthday هبه
-    </h1>
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
 
-    <div class="subtitle">
-      باقي على يومك الكبير ❤️
-    </div>
+  createParticles();
+}
 
+function createParticles() {
 
-    <div class="countdown">
+  particles = [];
 
-      <div class="box">
-        <span class="number" id="days">00</span>
-        <span class="label">يوم</span>
-      </div>
+  const w = window.innerWidth;
+  const h = window.innerHeight;
 
-      <div class="box">
-      <span class="number" id="hours">00</span>
-        <span class="label">ساعة</span>
-      </div>
+  /*
+    نستخدم Canvas ثاني مخفي لكتابة كلمة "آسف"
+    ثم نأخذ نقاط الحروف ونضع "أحبك" عليها.
+  */
 
-      <div class="box">
-        <span class="number" id="minutes">00</span>
-        <span class="label">دقيقة</span>
-      </div>
+  const textCanvas = document.createElement("canvas");
+  const textCtx = textCanvas.getContext("2d");
 
-      <div class="box">
-        <span class="number" id="seconds">00</span>
-        <span class="label">ثانية</span>
-      </div>
+  textCanvas.width = w;
+  textCanvas.height = h;
 
-    </div>
+  const fontSize = Math.min(w * 0.48, h * 0.55);
 
+  textCtx.font =
+    900 ${fontSize}px Arial, Tahoma, sans-serif;
 
-    <div class="bottom">
-      ما بقي إلا القليل... 🎂
-    </div>
+  textCtx.textAlign = "center";
+  textCtx.textBaseline = "middle";
+  textCtx.fillStyle = "white";
 
-    <div class="cake">
-      🎂 ❤️
-    </div>
+  textCtx.fillText(
+    "آسف",
+    w / 2,
+    h / 2
+  );
 
-  </main>
+  const image = textCtx.getImageData(
+    0,
+    0,
+    w,
+    h
+  );
 
+  /*
+    كل عدة بكسلات = كلمة "أحبك"
+  */
 
-  <script>
+  const gap = window.innerWidth < 600 ? 7 : 9;
 
-    /* النجوم */
+  for (let y = 0; y < h; y += gap) {
 
-    const stars =
-      document.querySelector(".stars");
+    for (let x = 0; x < w; x += gap) {
 
-    for (let i = 0; i < 120; i++) {
+      const index =
+        (y * w + x) * 4;
 
-      const star =
-        document.createElement("div");
+      const alpha = image.data[index + 3];
 
-      star.className = "star";
+      if (alpha > 100) {
 
-      star.style.left =
-        Math.random() * 100 + "%";
+        particles.push({
+          x: x,
+          y: y,
 
-      star.style.top =
-        Math.random() * 100 + "%";
+          offsetX: (Math.random() - 0.5) * 3,
+          offsetY: (Math.random() - 0.5) * 3,
 
-      star.style.animationDelay =
-        Math.random() * 3 + "s";
+          rotation:
+            (Math.random() - 0.5) * 0.15,
 
-      stars.appendChild(star);
-    }
+          opacity:
+            0.45 + Math.random() * 0.55,
 
+          size:
+            window.innerWidth < 600
+              ? 8 + Math.random() * 3
+              : 10 + Math.random() * 4,
 
-    /* تاريخ عيد الميلاد */
-
-    const birthday =
-      new Date("2026-08-22T00:00:00+03:00").getTime();
-
-
-    function updateCountdown() {
-
-      const now =
-        new Date().getTime();
-
-      const distance =
-        birthday - now;
-
-
-      if (distance <= 0) {
-
-        document.getElementById("days").textContent = "00";
-        document.getElementById("hours").textContent = "00";
-        document.getElementById("minutes").textContent = "00";
-        document.getElementById("seconds").textContent = "00";
-
-        document.querySelector(".subtitle").textContent =
-          "اليوم هو يومك الكبير ❤️";
-
-        document.querySelector(".bottom").textContent =
-          "Happy Birthday هبه 🎂❤️";
-
-        return;
+          phase:
+            Math.random() * Math.PI * 2
+        });
       }
-
-
-      const days =
-        Math.floor(
-          distance / (1000 * 60 * 60 * 24)
-        );
-
-
-      const hours =
-        Math.floor(
-          (distance / (1000 * 60 * 60)) % 24
-        );
-
-
-      const minutes =
-        Math.floor(
-          (distance / (1000 * 60)) % 60
-        );
-
-
-      const seconds =
-        Math.floor(
-          (distance / 1000) % 60
-        );
-
-
-      document.getElementById("days").textContent =
-        String(days).padStart(2, "0");
-
-      document.getElementById("hours").textContent =
-        String(hours).padStart(2, "0");
-
-      document.getElementById("minutes").textContent =
-        String(minutes).padStart(2, "0");
-
-      document.getElementById("seconds").textContent =
-        String(seconds).padStart(2, "0");
-
     }
+  }
 
+  /*
+    نضيف كلمات خفيفة حول الشاشة
+    حتى يكون الشكل أجمل.
+  */
 
-    updateCountdown();
+  const extra = window.innerWidth < 600 ? 250 : 500;
 
-    setInterval(
-      updateCountdown,
-      1000
+  for (let i = 0; i < extra; i++) {
+
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+
+      offsetX: 0,
+      offsetY: 0,
+
+      rotation:
+        (Math.random() - 0.5) * 0.2,
+
+      opacity:
+        0.08 + Math.random() * 0.25,
+
+      size:
+        8 + Math.random() * 3,
+
+      phase:
+        Math.random() * Math.PI * 2,
+
+      background: true
+    });
+  }
+}
+
+function draw(time) {
+
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  ctx.clearRect(0, 0, w, h);
+
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, w, h);
+
+  for (const p of particles) {
+
+    const movement =
+      Math.sin(
+        time * 0.0015 + p.phase
+      ) * 1.5;
+
+    ctx.save();
+
+    ctx.translate(
+      p.x + p.offsetX,
+      p.y + p.offsetY + movement
     );
 
+    ctx.rotate(p.rotation);
 
-    /* القلوب */
+    ctx.globalAlpha = p.opacity;
 
-    function createHeart() {
+    ctx.fillStyle = "#a855f7";
 
-      const heart =
-        document.createElement("div");
+    ctx.font =
+      600 ${p.size}px Arial, Tahoma, sans-serif;
 
-      heart.className = "heart";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
 
-      heart.textContent =
-        Math.random() > .5
-        ? "❤️"
-        : "💜";
-
-
-      heart.style.left =
-        Math.random() * 100 + "vw";
-
-
-      heart.style.fontSize =
-        (14 + Math.random() * 18) + "px";
-
-
-      heart.style.animationDuration =
-        (5 + Math.random() * 5) + "s";
-
-
-      document
-        .querySelector(".hearts")
-        .appendChild(heart);
-
-
-      setTimeout(
-        () => heart.remove(),
-        10000
-      );
-
-    }
-
-
-    setInterval(
-      createHeart,
-      1200
+    ctx.fillText(
+      "أحبك",
+      0,
+      0
     );
 
-  </script>
+    ctx.restore();
+  }
+
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener(
+  "resize",
+  resize
+);
+
+resize();
+
+requestAnimationFrame(draw);
+</script>
 
 </body>
 </html>
